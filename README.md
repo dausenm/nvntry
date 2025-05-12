@@ -1,7 +1,10 @@
 ## About Me
-    Hi! I’m Dausen — a recent Computer Science graduate from the University of Alabama and the solo developer behind nvntry. My background is in the bar and restaurant industry, where I saw firsthand how much peace of mind inventory systems bring to operators. That inspired me to build a tool that brings the same level of organization to everyday life.
+    Hi! I’m Dausen — a recent Computer Science graduate from the University of Alabama and the solo developer behind
+    nvntry. My background is in the bar and restaurant industry, where I saw firsthand how much peace of mind inventory
+    systems bring to operators. That inspired me to build a tool that brings the same level of organization to everyday life.
 
-    This project is both a personal passion and a learning experience — I’m using it to deepen my skills in Dart and Flutter, and to build something genuinely useful for others. Thanks for checking it out!
+    This project is both a personal passion and a learning experience — I’m using it to deepen my skills in Dart and 
+    Flutter, and to build something genuinely useful for others. Thanks for checking it out!
 
 ## nvntry
 
