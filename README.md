@@ -7,14 +7,12 @@
     Flutter, and to build something genuinely useful for others. Thanks for checking it out!
 
 ## nvntry
-
     nvntry (Pronounced "inventory") is a personal inventory tracking app. It allows users to document and categorize their stuff to be organized and always have
     an idea of what they have at home, in their car, at work, or wherever else you'd like to track.
 
 ## ## Getting Started
 
 ## Prerequisites
-
     Flutter SDK (version 3.10 or later recommended)
 
     Dart (comes with Flutter)
