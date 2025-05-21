@@ -20,6 +20,51 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _inventoryBox = Hive.box<Item>('inventory');
+
+    if (_inventoryBox.isEmpty) {
+      _addTestItems();
+    }
+  }
+
+  void _addTestItems() {
+    final testItems = [
+      Item(id: '1', name: 'Milk', category: 'Fridge', quantity: 1),
+      Item(id: '2', name: 'Eggs', category: 'Fridge', quantity: 12),
+      Item(id: '3', name: 'Socks', category: 'Closet', quantity: 5),
+      Item(id: '4', name: 'Notebook', category: 'Desk', quantity: 3),
+      Item(id: '5', name: 'Umbrella', category: 'Car', quantity: 1),
+      Item(
+        id: '6',
+        name: 'Limp Bizkit Significant Other CD',
+        category: 'Car',
+        quantity: 1,
+      ),
+      Item(
+        id: '7',
+        name: 'Pilot Precise V5 RT',
+        category: 'Desk',
+        quantity: 13,
+      ),
+      Item(id: '8', name: 'Vans Sk8 Hi', category: 'Closet', quantity: 1),
+      Item(id: '9', name: 'Ketchup', category: 'Fridge', quantity: 1),
+      Item(id: '10', name: 'Kraft Singles', category: 'Fridge', quantity: 21),
+      Item(
+        id: '11',
+        name: 'White Carhartt T-Shirt',
+        category: 'Closet',
+        quantity: 1,
+      ),
+      Item(
+        id: '12',
+        name: 'Black Carhartt T-Shirt',
+        category: 'Closet',
+        quantity: 2,
+      ),
+    ];
+
+    for (var item in testItems) {
+      _inventoryBox.put(item.id, item);
+    }
   }
 
   Future<void> _addNewItem() async {
@@ -78,43 +123,75 @@ class _HomeScreenState extends State<HomeScreen> {
             tabs: categories.map((cat) => Tab(text: cat)).toList(),
           ),
         ),
-        body: TabBarView(
-          children:
-              categories.map((category) {
-                final items =
-                    allItems
-                        .where((item) => item.category == category)
-                        .toList();
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Search items',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children:
+                    categories.map((category) {
+                      final items =
+                          allItems
+                              .where(
+                                (item) =>
+                                    item.category == category &&
+                                    item.name.toLowerCase().contains(
+                                      _searchQuery.toLowerCase(),
+                                    ),
+                              )
+                              .toList();
 
-                if (items.isEmpty) {
-                  return const Center(
-                    child: Text('No items in this category.'),
-                  );
-                }
+                      if (items.isEmpty) {
+                        return const Center(
+                          child: Text('No matching items in this category.'),
+                        );
+                      }
 
-                return ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return Dismissible(
-                      key: Key(item.id),
-                      direction: DismissDirection.endToStart,
-                      background: Container(
-                        color: Colors.red,
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: const Icon(Icons.delete, color: Colors.white),
-                      ),
-                      onDismissed: (_) => _deleteItem(item.id),
-                      child: ListTile(
-                        title: Text(item.name),
-                        subtitle: Text('Qty: ${item.quantity}'),
-                        onTap: () => _editItem(item.id),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
+                      return ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final item = items[index];
+                          return Dismissible(
+                            key: Key(item.id),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onDismissed: (_) => _deleteItem(item.id),
+                            child: ListTile(
+                              title: Text(item.name),
+                              subtitle: Text('Qty: ${item.quantity}'),
+                              onTap: () => _editItem(item.id),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+              ),
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _addNewItem,
